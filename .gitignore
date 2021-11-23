@@ -176,3 +176,9 @@ fabric.properties
 # to heavy files
 
 /output/
+/data/processed/
+/data/raw/shps/
+/data/raw/observed/EPSs/
+/data/raw/observed/PISCO/prec/
+/data/raw/observed/PISCO/runoff/
+/data/raw/observed/PISCO/temp/
