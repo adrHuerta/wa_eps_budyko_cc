@@ -31,7 +31,7 @@ ID_bad_basins = ["GR2M_ID_" + str(item) for item in ID_bad_basins]
 # making runoff data from ID_bad_basin in np.nan
 new_pisco_runoff_values = pisco_runoff_values
 new_pisco_runoff_values[ID_bad_basins] = np.nan
-new_pisco_runoff_values = new_pisco_runoff_values.rolling(window=15, center=True).mean()
+new_pisco_runoff_values = new_pisco_runoff_values.rolling(window=30, center=True).mean()
 new_pisco_runoff_values = np.round(new_pisco_runoff_values.dropna(axis=0, thresh=1), 2)
 new_pisco_runoff_values.to_csv("data/processed/present/PISCO/runoff/Q_mov15yearly.csv")
 

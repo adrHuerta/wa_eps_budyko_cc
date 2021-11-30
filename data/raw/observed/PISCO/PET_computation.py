@@ -53,7 +53,16 @@ piscopet = piscopet.isel(time=~piscopet.time.dt.strftime('%m-%d').isin("02-29"))
 piscopet["time"] = hydro_time
 
 piscopet_anual = piscopet.resample(time="1Y").sum()
-piscopet_anual = piscopet_anual.rolling(time=15, center=True).mean().dropna("time")
+
+# for analysis
+piscopet_mean_anual = piscopet_anual.sel(time=slice("1982-01-01", "2011-12-31")).mean(dim="time")
+piscopet_mean_anual = piscopet_mean_anual.reindex(longitude=np.arange(piscopet.longitude.values[1], piscopet.longitude.values[-1], 0.008),
+                                                  latitude=np.arange(piscopet.latitude.values[1], piscopet.latitude.values[-1], -0.008),
+                                                  method="nearest")
+np.round(piscopet_mean_anual, 1).to_netcdf("data/processed/present/PISCO/pet/PET_mean_anual.nc")
+
+# for omega calibration
+piscopet_anual = piscopet_anual.rolling(time=30, center=True).mean().dropna("time")
 piscopet_anual = piscopet_anual.reindex(longitude=np.arange(piscopet.longitude.values[1], piscopet.longitude.values[-1], 0.008),
                                         latitude=np.arange(piscopet.latitude.values[1], piscopet.latitude.values[-1], -0.008),
                                         method="nearest")

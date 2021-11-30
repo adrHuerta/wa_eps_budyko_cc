@@ -17,9 +17,18 @@ piscop = piscop.isel(time=~piscop.time.dt.strftime('%m-%d').isin("02-29"))
 piscop["time"] = hydro_time
 
 piscop_anual = piscop.resample(time="1Y").sum()
-piscop_anual = piscop_anual.rolling(time=15, center=True).mean().dropna("time")
-piscop_anual = piscop_anual.reindex(longitude=np.arange(piscopet.longitude.values[1], piscopet.longitude.values[-1], 0.008),
-                                    latitude=np.arange(piscopet.latitude.values[1], piscopet.latitude.values[-1], -0.008),
+
+# for analysis
+piscop_mean_anual = piscop_anual.sel(time=slice("1982-01-01", "2011-12-31")).mean(dim="time")
+piscop_mean_anual = piscop_mean_anual.reindex(longitude=piscopet.longitude.values,
+                                              latitude=piscopet.latitude.values,
+                                              method="nearest")
+np.round(piscop_mean_anual, 1).to_netcdf("data/processed/present/PISCO/prec/P_mean_anual.nc")
+
+# for omega calibration
+piscop_anual = piscop_anual.rolling(time=30, center=True).mean().dropna("time")
+piscop_anual = piscop_anual.reindex(longitude=piscopet.longitude.values,
+                                    latitude=piscopet.latitude.values,
                                     method="nearest")
 
 np.round(piscop_anual, 1).to_netcdf("data/processed/present/PISCO/prec/P_mov15yearly.nc")
