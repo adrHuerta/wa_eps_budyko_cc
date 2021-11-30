@@ -12,7 +12,7 @@ def xr_crop(shp_i, netcdf_i):
     return crop_netcdf_i
 
 
-def xr_shp_to_grid(shp_i, netcdf_array):
+def xr_shp_to_grid(shp_i, netcdf_array, to_drop=["time", "spatial_ref"]):
     # get real box
     shp_i_geometry = shp_i.geometry
 
@@ -25,7 +25,7 @@ def xr_shp_to_grid(shp_i, netcdf_array):
     # making "True/False" values
     mask.values[~np.isnan(mask.values)] = 1
 
-    return mask.drop(["time", "spatial_ref"])
+    return mask.drop(to_drop)
 
 
 def xr_mask(grid_mask, netcdf_i):
