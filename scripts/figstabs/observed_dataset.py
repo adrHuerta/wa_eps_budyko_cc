@@ -37,7 +37,7 @@ fig, (ax0, ax1) = plt.subplots(1, 2, figsize = (6, 4), dpi = 250, sharey=True, s
 
 cmap = pl.cm.viridis
 my_cmap = cmap(np.arange(cmap.N))
-my_cmap[:,-1] = np.repeat(.7, cmap.N)
+my_cmap[:,-1] = np.repeat(1, cmap.N)
 my_cmap = ListedColormap(my_cmap)
 
 plot_b = pisco_p.p.plot(ax = ax0, cmap=my_cmap, add_colorbar=False, levels= [0, 10, 50, 100, 200, 900])
@@ -61,7 +61,7 @@ ax0.grid(True, linestyle='--', color = "black", alpha = 0.1)
 
 cmap = pl.cm.Spectral_r
 my_cmap = cmap(np.arange(cmap.N))
-my_cmap[:,-1] = np.repeat(.7, cmap.N)
+my_cmap[:,-1] = np.repeat(1, cmap.N)
 my_cmap = ListedColormap(my_cmap)
 
 plot_b = pisco_tx.tx.plot(ax = ax1, cmap = my_cmap, add_colorbar=False, levels= 6)
@@ -94,7 +94,7 @@ cax = fig.add_axes([0.175, 0.15, 0.015, 0.275])
 
 cmap_bar = pl.cm.viridis_r
 my_cmap = cmap_bar(np.arange(cmap_bar.N))
-my_cmap[:,-1] = np.repeat(.7, cmap_bar.N)
+my_cmap[:,-1] = np.repeat(1, cmap_bar.N)
 my_cmap = ListedColormap(my_cmap)
 
 #cmap_bar = mpl.cm.viridis_r
@@ -120,7 +120,7 @@ ax2.grid(True, linestyle='--', color = "black", alpha = 0.1)
 cax = fig.add_axes([0.575, 0.15, 0.015, 0.275])
 cmap_bar = discrete_cmap(N=14, base_cmap="gist_rainbow")
 my_cmap = cmap_bar(np.arange(cmap_bar.N))
-my_cmap[:,-1] = np.repeat(.7, cmap_bar.N)
+my_cmap[:,-1] = np.repeat(1, cmap_bar.N)
 my_cmap = ListedColormap(my_cmap)
 
 norm = mpl.colors.BoundaryNorm(np.arange(0,len(pisco_runoff["Region"].unique()) + .1), my_cmap.N)
