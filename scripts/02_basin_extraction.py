@@ -43,8 +43,16 @@ aet_by_basin = prec_by_basin_df - pisco_q_values
 Ei_by_basin = aet_by_basin / prec_by_basin_df
 Ai_by_basin = pet_by_basin_df / prec_by_basin_df
 
+# removing "bad" basins (outside limits of Budyko's space)
+for i in aet_by_basin.index:
+    bad_basins_00_i = aet_by_basin.loc[i][aet_by_basin.loc[i] <= 0].index.tolist()
+    bad_basins_01_i = Ei_by_basin.loc[i][Ei_by_basin.loc[i] >= 1].index.tolist()
+    bad_basins_02_i = prec_by_basin_df.loc[i][prec_by_basin_df.loc[i] < 0].index.tolist()
+    bad_basins_03_i = Ai_by_basin.loc[i][Ai_by_basin.loc[i] < 0].index.tolist()
+    bad_basins_i = list(set(bad_basins_00_i + bad_basins_01_i + bad_basins_02_i + bad_basins_03_i))
+    prec_by_basin_df.loc[i, bad_basins_i] = np.nan
+    pet_by_basin_df.loc[i, bad_basins_i] = np.nan
+
 #
 prec_by_basin_df.to_csv("data/processed/present/PISCO/prec/P_mov15yearly_by_basin.csv")
 pet_by_basin_df.to_csv("data/processed/present/PISCO/pet/PET_mov15yearly_by_basin.csv")
-Ei_by_basin.to_csv("data/processed/present/Ei_mov15yearly_by_basin.csv")
-Ai_by_basin.to_csv("data/processed/present/Ai_mov15yearly_by_basin.csv")
