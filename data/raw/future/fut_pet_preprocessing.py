@@ -75,7 +75,7 @@ for nfile in range(len(nc_files_tmax)):
   piscopet = piscopet.isel(time=~piscopet.time.dt.strftime('%m-%d').isin("02-29"))
   piscopet["time"] = hydro_time
   piscopet_anual = piscopet.resample(time="1Y").sum().mean(dim="time")
-  piscopet_anual = piscopet_anual.reindex(longitude=np.arange(PISCOsns_grid.longitude.values[1], PISCOsns_grid.longitude.values[-1], 0.008),
-                                          latitude=np.arange(PISCOsns_grid.latitude.values[1], PISCOsns_grid.latitude.values[-1], -0.008),
+  piscopet_anual = piscopet_anual.reindex(longitude=PISCOsns_grid.longitude.values,
+                                          latitude=PISCOsns_grid.latitude.values,
                                           method="nearest")
   piscopet_anual.to_netcdf("/content/drive/MyDrive/Google_Colab_temp/others/SNS/pet_" + nc_files_tmax[nfile].split("/")[-1], encoding=encoding, engine='netcdf4')

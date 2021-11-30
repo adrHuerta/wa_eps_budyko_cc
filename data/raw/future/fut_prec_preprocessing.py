@@ -8,6 +8,7 @@ Original file is located at
 """
 
 from google.colab import drive
+
 drive.mount('/content/drive')
 
 import xarray as xr
@@ -28,14 +29,15 @@ encoding = {v: {'zlib': True, 'complevel': 5} for v in ["p"]}
 
 nc_files_data = []
 for nc_file in nc_files:
-  
-  piscop = xr.open_dataset(nc_file)
-  piscop = piscop.rename({"lat":"latitude","lon":"longitude","pr":"p"})
-  piscop = piscop.sel(time=slice("2035-09-01", "2065-08-31"))
-  piscop = piscop.isel(time=~piscop.time.dt.strftime('%m-%d').isin("02-29"))
-  piscop["time"] = hydro_time
-  piscop_anual = piscop.resample(time="1Y").sum().mean(dim="time")
-  piscop_anual = piscop_anual.reindex(longitude=np.arange(PISCOsns_grid.longitude.values[1], PISCOsns_grid.longitude.values[-1], 0.008),
-                                      latitude=np.arange(PISCOsns_grid.latitude.values[1], PISCOsns_grid.latitude.values[-1], -0.008),
-                                      method="nearest")
-  piscop_anual.to_netcdf("/content/drive/MyDrive/Google_Colab_temp/others/SNS/p_" + nc_file.split("/")[-1], encoding=encoding, engine='netcdf4')
+    piscop = xr.open_dataset(nc_file)
+    piscop = piscop.rename({"lat": "latitude", "lon": "longitude", "pr": "p"})
+    piscop = piscop.sel(time=slice("2035-09-01", "2065-08-31"))
+    piscop = piscop.isel(time=~piscop.time.dt.strftime('%m-%d').isin("02-29"))
+    piscop["time"] = hydro_time
+    piscop_anual = piscop.resample(time="1Y").sum().mean(dim="time")
+    piscop_anual = piscop_anual.reindex(
+        longitude=PISCOsns_grid.longitude.values,
+        latitude=PISCOsns_grid.latitude.values,
+        method="nearest")
+    piscop_anual.to_netcdf("/content/drive/MyDrive/Google_Colab_temp/others/SNS/p_" + nc_file.split("/")[-1],
+                           encoding=encoding, engine='netcdf4')
