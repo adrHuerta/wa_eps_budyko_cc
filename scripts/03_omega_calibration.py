@@ -28,9 +28,14 @@ for time in Q_by_basin.index:
     PET_per_year = PET_by_basin.loc[time]
     Q_per_year = Q_by_basin.loc[time]
 
+    Q_shp_per_year = Q_shp
+    bad_basin = P_per_year[P_per_year.isna()].index
+    bad_basin = [int(item.split("_")[-1]) for item in bad_basin]
+    Q_shp_per_year = Q_shp_per_year[~Q_shp_per_year["GR2M_ID"].isin(bad_basin)]
+
     best_omega_by_area = []
-    for area in sorted(Q_shp.Region.unique()):
-        selected_basins = random.sample(["GR2M_ID_" + str(item) for item in Q_shp[Q_shp["Region"] == area]["GR2M_ID"].tolist()], 30)
+    for area in sorted(Q_shp_per_year.Region.unique()):
+        selected_basins = random.sample(["GR2M_ID_" + str(item) for item in Q_shp_per_year[Q_shp_per_year["Region"] == area]["GR2M_ID"].tolist()], 10)
         best_omega_by_area.append(pd.DataFrame([calib_Budyko(q=Q_per_year.loc[item], p=P_per_year.loc[item], pet=PET_per_year.loc[item])  for item in selected_basins]))
 
     best_omega_by_time.append(pd.concat(best_omega_by_area, axis=1))
@@ -39,13 +44,15 @@ for time in Q_by_basin.index:
 
 best_omega = pd.concat(best_omega_by_time, axis=0)
 best_omega.reset_index(inplace=True, drop=True)
+best_omega.columns = shp_order
+best_omega.to_csv("data/processed/others/omega/csv_omega_values.csv")
 
 encoding = {v: {'zlib': True, 'complevel': 5} for v in ["omega"]}
 
 for ensemble in range(best_omega.shape[0]):
     ensemble_grid = cluster_areas.gridded_groups
     ensemble_omega = best_omega.iloc[ensemble]
-    for a, b in zip([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], ensemble_omega):
+    for a, b in zip([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], ensemble_omega):
         ensemble_grid.values[ensemble_grid.values == a] = b
     ensemble_grid.to_dataset(name="omega").to_netcdf("data/processed/others/omega/omega_" + str(ensemble).zfill(3) + ".nc", encoding=encoding, engine='netcdf4')
 
