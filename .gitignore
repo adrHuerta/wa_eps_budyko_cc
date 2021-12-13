@@ -182,3 +182,5 @@ fabric.properties
 /data/raw/observed/PISCO/prec/
 /data/raw/observed/PISCO/runoff/
 /data/raw/observed/PISCO/temp/
+/data/raw/future/temp/
+/data/raw/future/pet/
