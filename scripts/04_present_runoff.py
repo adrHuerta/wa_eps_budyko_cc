@@ -31,3 +31,4 @@ q_pre = cdo.cat(input=sorted(glob.glob("data/processed/present/PISCO/runoff/ense
 q_pre = xr.open_dataset(q_pre, chunks={"latitude":100,"longitude":100})
 q_pre.median(dim="time").to_netcdf("data/processed/present/PISCO/runoff/median_ensemble_runoff.nc")
 q_pre.std(dim="time").to_netcdf("data/processed/present/PISCO/runoff/sd_ensemble_runoff.nc")
+

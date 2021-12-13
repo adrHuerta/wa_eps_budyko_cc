@@ -9,7 +9,7 @@ exec(open("src/calib_Budyko.py").read())
 
 omega = xr.open_dataset("data/processed/others/omega/ensemble_omega.nc")
 p_fut = xr.open_dataset("data/processed/future/prec/p_SENAMHI_pp_d12k_ACCESS1-0_rcp85_scal.nc")
-pet_fut = xr.open_dataset("data/processed/future/pet/pet_SENAMHI_tmax_d12k_ACCESS1-0_rcp85_scal.nc")
+pet_fut = xr.open_dataset("data/processed/future/pet/pet_SENAMHI_tmax_d12k_ACCESS1-0_rcp85_scal-001.nc")
 
 def apply_q2(omega_i):
     encoding = {v: {'zlib': True, 'complevel': 5} for v in ["q"]}
@@ -35,7 +35,7 @@ q_fut.std(dim="time").to_netcdf("data/processed/future/runoff/ACCESS/sd_ensemble
 
 omega = xr.open_dataset("data/processed/others/omega/ensemble_omega.nc")
 p_fut = xr.open_dataset("data/processed/future/prec/p_SENAMHI_pp_d12k_HadGEM2-ES_rcp85_scal.nc")
-pet_fut = xr.open_dataset("data/processed/future/pet/pet_SENAMHI_tmax_d12k_HadGEM2-ES_rcp85_scal.nc")
+pet_fut = xr.open_dataset("data/processed/future/pet/pet_SENAMHI_tmax_d12k_HadGEM2-ES_rcp85_scal-003.nc")
 
 def apply_q2(omega_i):
     encoding = {v: {'zlib': True, 'complevel': 5} for v in ["q"]}
@@ -62,7 +62,7 @@ q_fut.std(dim="time").to_netcdf("data/processed/future/runoff/HADGEM/sd_ensemble
 
 omega = xr.open_dataset("data/processed/others/omega/ensemble_omega.nc")
 p_fut = xr.open_dataset("data/processed/future/prec/p_SENAMHI_pp_d12k_MPI-ESM-LR_rcp85_scal.nc")
-pet_fut = xr.open_dataset("data/processed/future/pet/pet_SENAMHI_tmax_d12k_MPI-ESM-LR_rcp85_scal.nc")
+pet_fut = xr.open_dataset("data/processed/future/pet/pet_SENAMHI_tmax_d12k_MPI-ESM-LR_rcp85_scal-002.nc")
 
 def apply_q2(omega_i):
     encoding = {v: {'zlib': True, 'complevel': 5} for v in ["q"]}

@@ -5,8 +5,8 @@ import rioxarray
 
 exec(open("src/crop_mask.py").read())
 
-shp_obs = gpd.read_file("data/processed/present/PISCO/runoff/Q_mov15yearly_shp.shp")
-pisco_grid = xr.open_dataset("data/processed/present/PISCO/prec/P_mov15yearly.nc").p.isel(time=0)
+shp_obs = gpd.read_file("data/processed/present/PISCO/runoff/Q_mov30yearly_shp.shp")
+pisco_grid = xr.open_dataset("data/processed/present/PISCO/prec/P_mov30yearly.nc").p.isel(time=0)
 pisco_grid = pisco_grid.rio.set_crs("epsg:4326")
 shp_SA = gpd.read_file("data/raw/shps/Sudamérica.shp").to_crs({"init": "epsg:4326"})
 
