@@ -24,19 +24,16 @@ pisco_lat = xr.DataArray(np.tile(piscotx["latitude"].values, (145, 1)).transpose
                          coords=[piscotx["latitude"].values, piscotx["longitude"].values],
                          dims=["latitude", "longitude"])
 
-# getting time values as Julian day
-dates = pd_date_range('1981-01-01', "2016-12-31", freq='D')
-dates = np.array([int(i.strftime("%j")) for i in dates])
-
 # computing PET
 for year in range(1981, 2017):
+    # getting time values as Julian day
     dates = pd_date_range(str(year) + '-01-01', str(year) + "-12-31", freq='D')
     dates = np.array([int(i.strftime("%j")) for i in dates])
 
-    xr.apply_ufunc(hargreaves_samani,
+    xr.apply_ufunc(hargreaves_samani, # hargreaves_samani(time_i, tmax_i, tmin_i, lat_i)
+                   dates,
                    piscotx.tx.loc[str(year) + '-01-01':str(year) + "-12-31"],
                    piscotn.tn.loc[str(year) + '-01-01':str(year) + "-12-31"],
-                   dates,
                    pisco_lat,
                    vectorize=True,
                    input_core_dims=[["time"], ["time"], ["time"], []],
@@ -55,7 +52,7 @@ piscopet["time"] = hydro_time
 piscopet_anual = piscopet.resample(time="1Y").sum()
 
 # for analysis
-piscopet_mean_anual = piscopet_anual.sel(time=slice("1982-01-01", "2011-12-31")).mean(dim="time")
+piscopet_mean_anual = piscopet_anual.sel(time=slice("1982-01-01", "2011-12-31")).mean(dim="time") # 30 years
 piscopet_mean_anual = piscopet_mean_anual.reindex(longitude=np.arange(piscopet.longitude.values[1], piscopet.longitude.values[-1], 0.008),
                                                   latitude=np.arange(piscopet.latitude.values[1], piscopet.latitude.values[-1], -0.008),
                                                   method="nearest")
@@ -67,5 +64,5 @@ piscopet_anual = piscopet_anual.reindex(longitude=np.arange(piscopet.longitude.v
                                         latitude=np.arange(piscopet.latitude.values[1], piscopet.latitude.values[-1], -0.008),
                                         method="nearest")
 
-np.round(piscopet_anual, 1).to_netcdf("data/processed/present/PISCO/pet/PET_mov15yearly.nc")
+np.round(piscopet_anual, 1).to_netcdf("data/processed/present/PISCO/pet/PET_mov30yearly.nc")
 [os.remove(file) for file in glob.glob("data/processed/present/PISCO/pet/pet_" "*.nc")]
