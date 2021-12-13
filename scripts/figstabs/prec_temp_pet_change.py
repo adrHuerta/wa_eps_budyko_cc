@@ -80,9 +80,9 @@ tn_change_std = xr_crop(shp_i=shp_SA[shp_SA["PAÍS"] == "Perú"], netcdf_i=tn_ch
 tn_change_std = xr_mask(grid_mask=shp_exp_grid, netcdf_i=tn_change_std)
 
 # pet
-access_pet_fut = xr.open_dataset("data/processed/future/pet/pet_SENAMHI_tmax_d12k_ACCESS1-0_rcp85_scal.nc")
-hadgem_pet_fut = xr.open_dataset("data/processed/future/pet/pet_SENAMHI_tmax_d12k_HadGEM2-ES_rcp85_scal.nc")
-mpiesm_pet_fut = xr.open_dataset("data/processed/future/pet/pet_SENAMHI_tmax_d12k_MPI-ESM-LR_rcp85_scal.nc")
+access_pet_fut = xr.open_dataset("data/processed/future/pet/pet_SENAMHI_tmax_d12k_ACCESS1-0_rcp85_scal-001.nc")
+hadgem_pet_fut = xr.open_dataset("data/processed/future/pet/pet_SENAMHI_tmax_d12k_HadGEM2-ES_rcp85_scal-003.nc")
+mpiesm_pet_fut = xr.open_dataset("data/processed/future/pet/pet_SENAMHI_tmax_d12k_MPI-ESM-LR_rcp85_scal-002.nc")
 pet_pre = xr.open_dataset("data/processed/present/PISCO/pet/PET_mean_anual.nc")
 
 pet_fut = xr.concat([100*(access_pet_fut-(pet_pre+1))/(pet_pre+1),
@@ -95,6 +95,7 @@ pet_change_std = pet_fut.std(dim="models")
 pet_change_percent = xr_crop(shp_i=shp_SA[shp_SA["PAÍS"] == "Perú"], netcdf_i=pet_change_percent)
 shp_exp_grid = xr_shp_to_grid(shp_i=shp_SA[shp_SA["PAÍS"] == "Perú"], netcdf_array=pet_change_percent.pet, to_drop=["spatial_ref"])
 pet_change_percent = xr_mask(grid_mask=shp_exp_grid, netcdf_i=pet_change_percent)
+pet_change_percent = pet_change_percent.where(pet_change_percent > -50) # some bad pixels around coastal area
 pet_change_std = xr_crop(shp_i=shp_SA[shp_SA["PAÍS"] == "Perú"], netcdf_i=pet_change_std)
 pet_change_std = xr_mask(grid_mask=shp_exp_grid, netcdf_i=pet_change_std)
 
@@ -214,7 +215,7 @@ axs[1, 2].yaxis.set_tick_params(labelsize = 2.5, pad = -3)
 axs[1, 2].grid(True, linestyle='--', color = "black", alpha = 0.1)
 
 # pet
-plot_b = pet_change_percent.pet.plot(ax = axs[0, 3], cmap = "bwr", add_colorbar=False, levels= 6, vmax=50, vmin=-50)
+plot_b = pet_change_percent.pet.plot(ax = axs[0, 3], cmap = "bwr", add_colorbar=False, levels= 6, vmax=20, vmin=-20)
 axin = inset_axes(axs[0, 3], width='4%', height='35%', loc = 'lower left', bbox_to_anchor = (0.05, 0.025, 1 ,1), bbox_transform = axs[0, 3].transAxes)
 cb = plt.colorbar(plot_b, cax=axin, orientation = "vertical", aspect = 5)
 cb.ax.set_ylabel('Cambio de PE (%)', labelpad=-17, size = 3.5)

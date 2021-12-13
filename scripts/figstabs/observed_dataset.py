@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import geopandas as gpd
 import xarray as xr
+import rioxarray
 
 import matplotlib.pyplot as plt
 import matplotlib.pylab as pl
@@ -11,6 +12,7 @@ from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import seaborn as sns
 
 exec(open("src/discrete_cmap.py").read())
+exec(open("src/crop_mask.py").read())
 
 plt.rcParams["font.family"] = "Arial"
 plt.rcParams['hatch.linewidth'] = 0.5
@@ -24,11 +26,18 @@ shp_lks = gpd.read_file("data/raw/shps/lago_titicaca_sideteva_puno.shp").to_crs(
 
 # gridded
 pisco_p = xr.open_dataset("data/raw/observed/PISCO/prec/PISCOpd.nc").resample(z="1Y").sum(skipna = False).mean(dim="z")
+pisco_p = xr_crop(shp_i=shp_SA[shp_SA["PAÍS"] == "Perú"], netcdf_i=pisco_p)
+shp_exp_grid = xr_shp_to_grid(shp_i=shp_SA[shp_SA["PAÍS"] == "Perú"], netcdf_array=pisco_p.p, to_drop=["spatial_ref"])
+pisco_p = xr_mask(grid_mask=shp_exp_grid, netcdf_i=pisco_p)
+
 pisco_tx = xr.open_dataset("data/raw/observed/PISCO/temp/PISCOdtx_v1.1.nc").resample(time="1Y").mean().mean(dim="time")
+pisco_tx = xr_crop(shp_i=shp_SA[shp_SA["PAÍS"] == "Perú"], netcdf_i=pisco_tx)
+shp_exp_grid = xr_shp_to_grid(shp_i=shp_SA[shp_SA["PAÍS"] == "Perú"], netcdf_array=pisco_tx.tx, to_drop=["spatial_ref"])
+pisco_tx = xr_mask(grid_mask=shp_exp_grid, netcdf_i=pisco_tx)
 
 # point (after pre-processing)
-pisco_runoff = gpd.read_file("data/processed/present/PISCO/runoff/Q_mov15yearly_shp.shp")
-pisco_runoff_values = pd.read_csv("data/processed/present/PISCO/runoff/Q_mov15yearly.csv")
+pisco_runoff = gpd.read_file("data/processed/present/PISCO/runoff/Q_mov30yearly_shp.shp")
+pisco_runoff_values = pd.read_csv("data/processed/present/PISCO/runoff/Q_mov30yearly.csv")
 pisco_runoff["q_values_exp"] = pisco_runoff_values.mean(axis=0).values
 pisco_runoff = pisco_runoff.sort_values(by="Region")
 

@@ -65,7 +65,7 @@ ax1.xaxis.set_tick_params(labelsize = 3.5, pad = -3)
 ax1.yaxis.set_tick_params(labelsize = 3.5, pad = -3)
 ax1.grid(True, linestyle='--', color = "black", alpha = 0.1)
 
-plt.savefig('output/runoff_mean_sd_change.png', bbox_inches='tight',pad_inches = 0.01, dpi = 300)
+plt.savefig('output/runoff_mean_sd_change_type_02.png', bbox_inches='tight',pad_inches = 0.01, dpi = 300)
 plt.close()
 
 """
