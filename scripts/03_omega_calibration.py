@@ -113,7 +113,7 @@ for time in Q_by_basin.index:
             nash_stat =  1 - (np.sum(np.power(Q_obs - Q_model, 2))/np.sum(np.power(Q_obs - np.mean(Q_obs), 2)))
             nash_stat_value.append(nash_stat)
 
-        best_omega_by_seed.append(np.arange(1.1, 11, .01)[np.argmax(nash_stat_value)])
+        best_omega_by_seed.append(np.arange(1.1, 5, .01)[np.argmax(nash_stat_value)])
 
     best_omega_by_time.append(pd.DataFrame(best_omega_by_seed))
     selected_basins_by_time.append(pd.concat(selected_basins_by_seed, axis=0))
