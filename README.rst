@@ -7,6 +7,10 @@ Resumen / Summary
 Datos / Data
 ------------------------
 - https://doi.org/10.6084/m9.figshare.17162087
+Código / Code
+------------------------
+- https://github.com/adrHuerta/wa_eps_budyko_cc
+- https://github.com/lgutierrezl/climatechange_runoff (maps)
 Referencia / Reference
 ------------------------
 
