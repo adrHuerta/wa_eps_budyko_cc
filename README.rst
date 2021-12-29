@@ -14,7 +14,7 @@ Código / Code
 - https://github.com/lgutierrezl/climatechange_runoff (maps)
 Referencia / Reference
 ------------------------
-Huerta, A. y Lavado-Casimiro, W. (2021). Atlas de producción de agua en el Perú: una evaluación presente y futura con énfasis en las cuencas de aporte de las EPS. Lima: Servicio Nacional de Meteorología e Hidrología del Perú. https://hdl.handle.net/20.500.12542/1206
+Huerta, A. y Lavado-Casimiro, W. (2021). Atlas de producción de agua en el Perú: una evaluación presente y futura con énfasis en las cuencas de aporte de las EPS. Lima: Servicio Nacional de Meteorología e Hidrología del Perú. https://hdl.handle.net/20.500.12542/1610
 
 Financiamiento / Funding
 ------------------------
